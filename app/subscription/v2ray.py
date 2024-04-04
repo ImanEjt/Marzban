@@ -572,6 +572,8 @@ class V2rayJsonConfig(str):
                                       id=settings['id'])
             outbound["settings"] = {}
             outbound["settings"]["vnext"] = vnext
+            outbound["settings"]["domainStrategy"] = "UseIPv4"
+
 
         elif inbound['protocol'] == 'vless':
             if net in ('tcp', 'kcp') and headers != 'http' and tls in ('tls', 'reality'):
@@ -584,6 +586,8 @@ class V2rayJsonConfig(str):
                                       flow=flow)
             outbound["settings"] = {}
             outbound["settings"]["vnext"] = vnext
+            outbound["settings"]["domainStrategy"] = "UseIPv4"
+
 
         elif inbound['protocol'] == 'trojan':
             settings = self.trojan_config(address=address,
