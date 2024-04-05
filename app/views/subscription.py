@@ -96,8 +96,8 @@ def user_subscription(token: str,
         if LooseVersion(version_str) >= LooseVersion("1.8.16"):
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
             return Response(content=conf, media_type="application/json", headers=response_headers)
-    elif re.match('^[Ss]treisand/(\d+\.\d+\.\d+)', user_agent):
-        version_str = re.match('^[Ss]treisand/(\d+\.\d+\.\d+)', user_agent).group(1)
+    elif re.match('^[Ss]treisand', user_agent):
+        version_str = re.match('\d+\.\d+\.\d+', user_agent).group(1)
         if LooseVersion(version_str) >= LooseVersion("1.6.18"):
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
             return Response(content=conf, media_type="application/json", headers=response_headers)
