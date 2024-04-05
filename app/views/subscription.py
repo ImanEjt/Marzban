@@ -1,4 +1,5 @@
 import re
+import json
 from datetime import datetime
 from distutils.version import LooseVersion
 
@@ -98,7 +99,9 @@ def user_subscription(token: str,
             return Response(content=conf, media_type="application/json", headers=response_headers)
     elif re.match('^[Ss]treisand', user_agent):
         conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
-        conf = dict(reversed(list(conf.items())))
+        conf = json.loads(conf)
+        conf.reverse()
+        conf = json.dumps(conf, indent=4)
         return Response(content=conf, media_type="application/json", headers=response_headers)
 
     else:
