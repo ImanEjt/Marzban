@@ -98,6 +98,7 @@ def user_subscription(token: str,
             return Response(content=conf, media_type="application/json", headers=response_headers)
     elif re.match('^[Ss]treisand', user_agent):
         conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
+        conf = dict(reversed(list(conf.items())))
         return Response(content=conf, media_type="application/json", headers=response_headers)
 
     else:
