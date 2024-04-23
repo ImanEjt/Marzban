@@ -636,10 +636,15 @@ class V2rayJsonConfig(str):
         if outbound["mux"]["enabled"]:
             outbound["mux"]["enabled"] = bool(inbound.get('mux_enable', False))
 
-        fragment_outbound2 = self.make_fragment_outbound()
-        fragment_outbound2['tag'] = 'direct'
-        # fragment_outbound2['tag'] = 'direct'
-        outbounds.append(fragment_outbound2)
-        # outbounds.append(direct_outbound)
+
+        direct_outbound = {
+            "tag": "direct",
+            "protocol": "freedom",
+            "settings": {
+
+            }
+        }
+            
+        outbounds.append(direct_outbound)
 
         self.add_config(remarks=remark, outbounds=outbounds)
