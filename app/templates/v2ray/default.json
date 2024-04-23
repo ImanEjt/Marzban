@@ -67,7 +67,7 @@
         "domain": [
           "geosite:category-ir",
           "regexp:.*\\.ir$",
-          "regexp:.*\\.xn--mgba3a4f16a$"
+          "regexp:.*\\.xn--mgba3a4f16a$",
           "p30download"
         ]
       },
