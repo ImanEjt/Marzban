@@ -640,6 +640,6 @@ class V2rayJsonConfig(str):
         fragment_outbound2['tag'] = 'direct'
         # fragment_outbound2['tag'] = 'direct'
         outbounds.append(fragment_outbound2)
-        outbounds.append(direct_outbound)
+        # outbounds.append(direct_outbound)
 
         self.add_config(remarks=remark, outbounds=outbounds)
