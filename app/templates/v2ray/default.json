@@ -52,7 +52,7 @@
     ]
   },
   "routing": {
-    "domainStrategy": "AsIs",
+    "domainStrategy": "UseIPv4",
     "rules": [
         {
         "ip": [
