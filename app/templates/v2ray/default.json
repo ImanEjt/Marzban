@@ -53,6 +53,24 @@
   },
   "routing": {
     "domainStrategy": "AsIs",
-    "rules": []
+    "rules": [
+        {
+        "ip": [
+          "geoip:private",
+          "geoip:ir"
+        ],
+        "outboundTag": "direct",
+        "type": "field"
+      },{
+        "type": "field",
+        "outboundTag": "direct",
+        "domain": [
+          "geosite:category-ir",
+          "regexp:.*\\.ir$",
+          "regexp:.*\\.xn--mgba3a4f16a$"
+          "p30download"
+        ]
+      },
+    ]
   }
 }
