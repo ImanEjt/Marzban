@@ -4,6 +4,13 @@
     "error": "",
     "loglevel": "warning"
   },
+  "dns": {
+    "servers": [
+      "1.1.1.1",
+      "8.8.8.8"
+    ],
+    "queryStrategy": "UseIPv4"
+  },
   "inbounds": [
     {
       "tag": "socks",
@@ -45,23 +52,18 @@
     }
   ],
   "outbounds": [],
-  "dns": {
-    "servers": [
-      "1.1.1.1",
-      "8.8.8.8"
-    ]
-  },
   "routing": {
     "domainStrategy": "UseIPv4",
     "rules": [
-        {
+      {
         "ip": [
           "geoip:private",
           "geoip:ir"
         ],
         "outboundTag": "direct",
         "type": "field"
-      },{
+      },
+      {
         "type": "field",
         "outboundTag": "direct",
         "domain": [
@@ -69,11 +71,24 @@
           "regexp:.*\\.xn--mgba3a4f16a$",
           "p30download",
           "codal",
+          "varzesh3",
+          "aparat",
+          "digikala",
+          "eitaa",
+          "torob",
+          "bale.ai",
+          "yektanet",
+          "tgju.org",
+          "zhaket.com",
+          "iranecar.com",
+          "tasnimnews.com",
+          "blogfa.com",
+          "faradars.org",
+          "agah.com",
           "tsetmc",
           "mobinhost",
           "onlineplus",
           "tsetmc",
-          "seo.ir",
           "arvancloud",
           "emofid",
           "zarinpal",
@@ -86,9 +101,6 @@
           "web-cdn.snapp.ir",
           "snapp.ir",
           "snapp.site",
-          "b2n.ir",
-          "onlineplus.firouzehasia.ir",
-          "api.firouzehasia.ir",
           "firouzehasia",
           "etadbir",
           "tadbirrlc",
@@ -97,17 +109,10 @@
           "bankino",
           "blubank",
           "emofid",
-          "wepod.ir",
-          "bpi.ir",
           "zarinpal.com",
           "bankino",
           "bankmellat",
-          "bmi.ir",
           "tobank",
-          "bim.ir",
-          "bki.ir",
-          "bank-maskan.ir",
-          "edbi.ir",
           "banksepah",
           "ebanksepah",
           "proxy.banksepah.ir",
@@ -124,8 +129,6 @@
           "tourismbank",
           "izbank",
           "sbank",
-          "ivbb.ir",
-          "qmb.ir",
           "rqbank",
           "sb24",
           "shaparak",
@@ -133,16 +136,10 @@
           "behpardakht.com",
           "onlineplus",
           "exir",
-          "semedco.ir",
           "exirbroker",
           "mail.emofid.com",
           "armoon.exirbroker.com",
-          "banksepah.ir",
-          "ebanksepah.ir",
-          "sakku-khatam.ir",
-          "rahkar.team",
-          "sb24.ir",
-          "pod.ir"
+          "rahkar.team"
         ]
       }
     ]
