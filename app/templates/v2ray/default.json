@@ -82,7 +82,6 @@
           "iranecar.com",
           "tasnimnews.com",
           "blogfa.com",
-          "faradars.org",
           "agah.com",
           "tsetmc",
           "mobinhost",
@@ -156,7 +155,8 @@
           "jaanapp.com",
           "meet.google.com",
           "irantic.com",
-          "skyroom.online"
+          "skyroom.online",
+          "cloudflare"
         ]
       }
     ]
