@@ -4,13 +4,6 @@
     "error": "",
     "loglevel": "warning"
   },
-  "dns": {
-    "servers": [
-      "1.1.1.1",
-      "8.8.8.8"
-    ],
-    "queryStrategy": "UseIPv4"
-  },
   "inbounds": [
     {
       "tag": "socks",
@@ -52,6 +45,12 @@
     }
   ],
   "outbounds": [],
+  "dns": {
+    "servers": [
+      "1.1.1.1"
+    ],
+    "queryStrategy": "UseIPv4"
+  },
   "routing": {
     "domainStrategy": "UseIPv4",
     "rules": [
@@ -67,6 +66,8 @@
         "type": "field",
         "outboundTag": "direct",
         "domain": [
+          "domain:ir",
+          "geosite:private",
           "regexp:.*\\.ir$",
           "regexp:.*\\.xn--mgba3a4f16a$",
           "p30download",
@@ -157,6 +158,12 @@
           "irantic.com",
           "skyroom.online",
           "cloudflare"
+        ]
+      }, {
+        "type": "field",
+        "outboundTag": "block",
+        "domain": [
+          "geosite:category-ads-all"
         ]
       }
     ]
