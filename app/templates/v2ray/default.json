@@ -6,8 +6,8 @@
   },
   "dns": {
     "servers": [
-      "8.8.8.8",
-      "1.1.1.1"
+      "1.1.1.1",
+      "8.8.8.8"
     ],
     "queryStrategy": "UseIPv4"
   },
@@ -155,7 +155,8 @@
           "donya-e-eqtesad",
           "jaanapp.com",
           "meet.google.com",
-          "irantic.com"
+          "irantic.com",
+          "faraboom.co"
         ]
       }
     ]
