@@ -637,22 +637,26 @@ class V2rayJsonConfig(str):
             outbound["mux"]["enabled"] = bool(inbound.get('mux_enable', False))
 
 
-        direct_outbound = {
-            "tag": "direct",
-            "protocol": "freedom",
-            "settings": {
-
-            }
-        }
+        direct_outbound =  {
+      "protocol": "freedom",
+      "settings": {},
+      "tag": "direct"
+    },
             
         outbounds.append(direct_outbound)
 
         block_outbound = {
-            "tag": "block",
-            "protocol": "blackhole",
-            "settings": {
-            }
+      "protocol": "blackhole",
+      "settings": {
+        "response": {
+          "type": "http"
         }
+      },
+      "tag": "block"
+    }
+
+           
+    
             
         outbounds.append(block_outbound)
 
