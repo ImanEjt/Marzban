@@ -1,95 +1,60 @@
 {
+  "log": {
+    "access": "",
+    "error": "",
+    "loglevel": "error"
+  },
   "dns": {
-    "hosts": {
-      "domain:googleapis.cn": "googleapis.com"
-    },
     "servers": [
       "1.1.1.1",
-      {
-        "address": "223.5.5.5",
-        "domains": [
-          "geosite:cn",
-          "geosite:geolocation-cn"
-        ],
-        "expectIPs": [
-          "geoip:cn"
-        ],
-        "port": 53
-      }
-    ]
+      "8.8.8.8"
+    ],
+    "queryStrategy": "UseIPv4"
   },
   "inbounds": [
     {
-      "listen": "127.0.0.1",
+      "tag": "socks",
       "port": 10808,
+      "listen": "0.0.0.0",
       "protocol": "socks",
-      "settings": {
-        "auth": "noauth",
-        "udp": true,
-        "userLevel": 8
-      },
       "sniffing": {
+        "enabled": true,
         "destOverride": [
           "http",
           "tls"
         ],
-        "enabled": true,
         "routeOnly": false
       },
-      "tag": "socks"
-    },
-    {
-      "listen": "127.0.0.1",
-      "port": 10809,
-      "protocol": "http",
       "settings": {
-        "userLevel": 8
-      },
-      "tag": "http"
-    }
-  ],
-  "log": {
-    "loglevel": "None"
-  },
-  "outbounds": [
-  ],
-  "policy": {
-    "levels": {
-      "8": {
-        "connIdle": 300,
-        "downlinkOnly": 8,
-        "handshake": 4,
-        "uplinkOnly": 8
+        "auth": "noauth",
+        "udp": true,
+        "allowTransparent": false
       }
     },
-    "system": {
-      "statsOutboundUplink": true,
-      "statsOutboundDownlink": true
+    {
+      "tag": "http",
+      "port": 10809,
+      "listen": "0.0.0.0",
+      "protocol": "http",
+      "sniffing": {
+        "enabled": true,
+        "destOverride": [
+          "http",
+          "tls"
+        ],
+        "routeOnly": false
+      },
+      "settings": {
+        "auth": "noauth",
+        "udp": true,
+        "allowTransparent": false
+      }
     }
-  },
+  ],
+  "outbounds": [],
   "routing": {
-    "domainStrategy": "IPIfNonMatch",
+    "domainStrategy": "UseIPv4",
     "rules": [
-      {
-        "ip": [
-          "1.1.1.1"
-        ],
-        "outboundTag": "proxy",
-        "port": "53"
-      },
-      {
-        "ip": [
-          "223.5.5.5"
-        ],
-        "outboundTag": "direct",
-        "port": "53"
-      },
-      {
-        "domain": [
-          "domain:googleapis.cn"
-        ],
-        "outboundTag": "proxy"
-      },
       {
         "ip": [
           "geoip:private",
@@ -193,18 +158,7 @@
           "irantic.com",
           "faraboom.co"
         ]
-      },
-      {
-        "domain": [
-          "geosite:geolocation-cn"
-        ],
-        "outboundTag": "direct"
-      },
-      {
-        "outboundTag": "proxy",
-        "port": "0-65535"
       }
     ]
-  },
-  "stats": {}
+  }
 }
