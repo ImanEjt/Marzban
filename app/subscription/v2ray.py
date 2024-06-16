@@ -6,7 +6,7 @@ from uuid import UUID
 
 from app.templates import render_template
 
-from config import (MUX_TEMPLATE, V2RAY_SUBSCRIPTION_TEMPLATE)
+from config import MUX_TEMPLATE, V2RAY_SUBSCRIPTION_TEMPLATE
 
 
 class V2rayShareLink(str):
@@ -39,15 +39,13 @@ class V2rayShareLink(str):
             "net": net,
             "path": path,
             "port": port,
+            "fragment": fs,
             "ps": remark,
             "scy": "auto",
             "tls": tls,
             "type": type,
             "v": "2",
         }
-
-        if fs:
-            payload["fragment"] = fs
 
         if tls == "tls":
             payload["sni"] = sni
@@ -70,40 +68,39 @@ class V2rayShareLink(str):
         )
 
     @classmethod
-    def vless(cls,
-              remark: str,
-              address: str,
-              port: int,
-              id: Union[str, UUID],
-              net='ws',
-              path='',
-              host='',
-              type='',
-              flow='',
-              tls='none',
-              sni='',
-              fp='',
-              alpn='',
-              pbk='',
-              sid='',
-              spx='',
-              ais='',
-              fs="",
-              ):
+    def vless(
+        cls,
+        remark: str,
+        address: str,
+        port: int,
+        id: Union[str, UUID],
+        net="ws",
+        path="",
+        host="",
+        type="",
+        flow="",
+        tls="none",
+        sni="",
+        fp="",
+        alpn="",
+        pbk="",
+        sid="",
+        spx="",
+        ais="",
+        fs="",
+    ):
 
-        payload = {
-            "security": tls,
-            "type": net,
-            "headerType": type
-        }
-        if flow and (tls in ('tls', 'reality') and net in ('tcp', 'kcp') and type != 'http'):
-            payload['flow'] = flow
+        payload = {"security": tls, "type": net, "headerType": type}
+        if flow and (
+            tls in ("tls", "reality") and net in ("tcp", "kcp") and type != "http"
+        ):
+            payload["flow"] = flow
 
-        if net == 'grpc':
-            payload['serviceName'] = path
+        if net == "grpc":
+            payload["serviceName"] = path
             payload["host"] = host
-        elif net == 'quic':
-            payload['key'] = path
+        elif net == "quic":
+            payload["key"] = path
             payload["quicSecurity"] = host
         else:
             payload["path"] = path
@@ -113,8 +110,7 @@ class V2rayShareLink(str):
             payload["sni"] = sni
             payload["fp"] = fp
             payload["alpn"] = alpn
-            if fs:
-                payload["fragment"] = fs
+            payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
         elif tls == "reality":
@@ -132,40 +128,39 @@ class V2rayShareLink(str):
         )
 
     @classmethod
-    def trojan(cls,
-               remark: str,
-               address: str,
-               port: int,
-               password: str,
-               net='tcp',
-               path='',
-               host='',
-               type='',
-               flow='',
-               tls='none',
-               sni='',
-               fp='',
-               alpn='',
-               pbk='',
-               sid='',
-               spx='',
-               ais='',
-               fs="",
-               ):
+    def trojan(
+        cls,
+        remark: str,
+        address: str,
+        port: int,
+        password: str,
+        net="tcp",
+        path="",
+        host="",
+        type="",
+        flow="",
+        tls="none",
+        sni="",
+        fp="",
+        alpn="",
+        pbk="",
+        sid="",
+        spx="",
+        ais="",
+        fs="",
+    ):
 
-        payload = {
-            "security": tls,
-            "type": net,
-            "headerType": type
-        }
-        if flow and (tls in ('tls', 'reality') and net in ('tcp', 'kcp') and type != 'http'):
-            payload['flow'] = flow
+        payload = {"security": tls, "type": net, "headerType": type}
+        if flow and (
+            tls in ("tls", "reality") and net in ("tcp", "kcp") and type != "http"
+        ):
+            payload["flow"] = flow
 
-        if net == 'grpc':
-            payload['serviceName'] = path
+        if net == "grpc":
+            payload["serviceName"] = path
             payload["host"] = host
-        elif net == 'quic':
-            payload['key'] = path
+        elif net == "quic":
+            payload["key"] = path
             payload["quicSecurity"] = host
         else:
             payload["path"] = path
@@ -175,8 +170,7 @@ class V2rayShareLink(str):
             payload["sni"] = sni
             payload["fp"] = fp
             payload["alpn"] = alpn
-            if fs:
-                payload["fragment"] = fs
+            payload["fragment"] = fs
             if ais:
                 payload["allowInsecure"] = 1
         elif tls == "reality":
@@ -227,13 +221,12 @@ class V2rayJsonConfig(str):
         if sni is not None:
             tlsSettings["serverName"] = sni
 
-        tlsSettings['allowInsecure'] = ais if ais else False
+        tlsSettings["allowInsecure"] = ais if ais else False
 
         if fp:
             tlsSettings["fingerprint"] = fp
         if alpn:
-            tlsSettings["alpn"] = [alpn] if not isinstance(
-                alpn, list) else alpn
+            tlsSettings["alpn"] = [alpn] if not isinstance(alpn, list) else alpn
 
         tlsSettings["show"] = False
 
@@ -310,7 +303,9 @@ class V2rayJsonConfig(str):
             tcpSettings["header"]["request"]["headers"] = {}
             tcpSettings["header"]["request"]["method"] = "GET"
             tcpSettings["header"]["request"]["headers"]["User-Agent"] = []
-            tcpSettings["header"]["request"]["headers"]["Accept-Encoding"] = ["gzip, deflate"]
+            tcpSettings["header"]["request"]["headers"]["Accept-Encoding"] = [
+                "gzip, deflate"
+            ]
             tcpSettings["header"]["request"]["headers"]["Connection"] = ["keep-alive"]
             tcpSettings["header"]["request"]["headers"]["Pragma"] = "no-cache"
 
@@ -365,7 +360,7 @@ class V2rayJsonConfig(str):
         kcpSettings["tti"] = 50
         kcpSettings["uplinkCapacity"] = 12
         kcpSettings["downlinkCapacity"] = 100
-        kcpSettings["congestion"] = False,
+        kcpSettings["congestion"] = (False,)
         kcpSettings["readBufferSize"] = 2
         kcpSettings["writeBufferSize"] = 2
 
@@ -379,9 +374,13 @@ class V2rayJsonConfig(str):
         return kcpSettings
 
     @staticmethod
-    def stream_setting_config(network=None, security=None,
-                              network_setting=None, tls_settings=None,
-                              sockopt=None):
+    def stream_setting_config(
+        network=None,
+        security=None,
+        network_setting=None,
+        tls_settings=None,
+        sockopt=None,
+    ):
 
         streamSettings = {}
 
@@ -410,7 +409,7 @@ class V2rayJsonConfig(str):
             streamSettings["httpupgradeSettings"] = network_setting
 
         if sockopt:
-            streamSettings['sockopt'] = sockopt
+            streamSettings["sockopt"] = sockopt
 
         return streamSettings
 
@@ -426,6 +425,7 @@ class V2rayJsonConfig(str):
         users["alterId"] = 0
         users["email"] = "https://gozargah.github.io/marzban/"
         users["security"] = "auto"
+        users["level"] = 8
         vnext["users"] = [users]
 
         return [vnext]
@@ -443,6 +443,8 @@ class V2rayJsonConfig(str):
         users["email"] = "https://gozargah.github.io/marzban/"
         users["security"] = "auto"
         users["encryption"] = "none"
+        users["level"] = 8
+
         if flow:
             users["flow"] = flow
         vnext["users"] = [users]
@@ -485,36 +487,35 @@ class V2rayJsonConfig(str):
 
         return settings
 
-    def make_fragment_outbound(self, packets="tlshello", length="100-200", interval="10-20"):
+    def make_fragment_outbound(
+        self, packets="tlshello", length="100-200", interval="10-20"
+    ):
 
         outbound = {
             "tag": "fragment_out",
             "protocol": "freedom",
             "settings": {
-                "fragment": {
-                    "packets": packets,
-                    "length": length,
-                    "interval": interval
-                }
-            }
+                "fragment": {"packets": packets, "length": length, "interval": interval}
+            },
         }
 
         return outbound
 
-    def make_stream_setting(self,
-                            net='',
-                            path='',
-                            host='',
-                            tls='',
-                            sni='',
-                            fp='',
-                            alpn='',
-                            pbk='',
-                            sid='',
-                            headers='',
-                            ais='',
-                            dialer_proxy=''
-                            ):
+    def make_stream_setting(
+        self,
+        net="",
+        path="",
+        host="",
+        tls="",
+        sni="",
+        fp="",
+        alpn="",
+        pbk="",
+        sid="",
+        headers="",
+        ais="",
+        dialer_proxy="",
+    ):
 
         if net == "ws":
             network_setting = self.ws_config(path=path, host=host)
@@ -523,116 +524,130 @@ class V2rayJsonConfig(str):
         elif net == "h2":
             network_setting = self.h2_config(path=path, host=host)
         elif net == "kpc":
-            network_setting = self.kpc_config(
-                path=path, host=host, header=headers)
+            network_setting = self.kpc_config(path=path, host=host, header=headers)
         elif net == "tcp":
             network_setting = self.tcp_http_config(path=path, host=host)
         elif net == "quic":
-            network_setting = self.quic_config(
-                path=path, host=host, header=headers)
+            network_setting = self.quic_config(path=path, host=host, header=headers)
         elif net == "httpupgrade":
             network_setting = self.httpupgrade_config(path=path, host=host)
 
         if tls == "tls":
             tls_settings = self.tls_config(sni=sni, fp=fp, alpn=alpn, ais=ais)
         elif tls == "reality":
-            tls_settings = self.reality_config(
-                sni=sni, fp=fp, pbk=pbk, sid=sid)
+            tls_settings = self.reality_config(sni=sni, fp=fp, pbk=pbk, sid=sid)
         else:
             tls_settings = None
 
         if dialer_proxy:
-            sockopt = {
-                "dialerProxy": dialer_proxy
-            }
+            sockopt = {"dialerProxy": dialer_proxy}
         else:
             sockopt = None
 
-        streamSettings = self.stream_setting_config(network=net, security=tls,
-                                                    network_setting=network_setting,
-                                                    tls_settings=tls_settings,
-                                                    sockopt=sockopt)
+        streamSettings = self.stream_setting_config(
+            network=net,
+            security=tls,
+            network_setting=network_setting,
+            tls_settings=tls_settings,
+            sockopt=sockopt,
+        )
 
         return streamSettings
 
     def add(self, remark: str, address: str, inbound: dict, settings: dict):
 
-        net = inbound['network']
-        protocol = inbound['protocol']
-        port = inbound['port']
-        tls = (inbound['tls'])
-        headers = inbound['header_type']
-        fragment = inbound['fragment_setting']
+        net = inbound["network"]
+        protocol = inbound["protocol"]
+        port = inbound["port"]
+        tls = inbound["tls"]
+        headers = inbound["header_type"]
+        fragment = inbound["fragment_setting"]
 
-        outbound = {
-            "tag": remark,
-            "protocol": protocol
-        }
+        outbound = {"tag": remark, "protocol": protocol}
 
-        if inbound['protocol'] == 'vmess':
-            vnext = self.vmess_config(address=address,
-                                      port=port,
-                                      id=settings['id'])
+        if inbound["protocol"] == "vmess":
+            vnext = self.vmess_config(address=address, port=port, id=settings["id"])
             outbound["settings"] = {}
             outbound["settings"]["vnext"] = vnext
+            outbound["settings"]["domainStrategy"] = "UseIPv4"
 
-        elif inbound['protocol'] == 'vless':
-            if net in ('tcp', 'kcp') and headers != 'http' and tls in ('tls', 'reality'):
-                flow = settings.get('flow', '')
+        elif inbound["protocol"] == "vless":
+            if (
+                net in ("tcp", "kcp")
+                and headers != "http"
+                and tls in ("tls", "reality")
+            ):
+                flow = settings.get("flow", "")
             else:
                 flow = None
-            vnext = self.vless_config(address=address,
-                                      port=port,
-                                      id=settings['id'],
-                                      flow=flow)
+            vnext = self.vless_config(
+                address=address, port=port, id=settings["id"], flow=flow
+            )
             outbound["settings"] = {}
             outbound["settings"]["vnext"] = vnext
+            outbound["settings"]["domainStrategy"] = "UseIPv4"
 
-        elif inbound['protocol'] == 'trojan':
-            settings = self.trojan_config(address=address,
-                                          port=port,
-                                          password=settings['password'])
+        elif inbound["protocol"] == "trojan":
+            settings = self.trojan_config(
+                address=address, port=port, password=settings["password"]
+            )
             outbound["settings"] = settings
 
-        elif inbound['protocol'] == 'shadowsocks':
-            settings = self.shadowsocks_config(address=address,
-                                               port=port,
-                                               password=settings['password'],
-                                               method=settings['method'])
+        elif inbound["protocol"] == "shadowsocks":
+            settings = self.shadowsocks_config(
+                address=address,
+                port=port,
+                password=settings["password"],
+                method=settings["method"],
+            )
             outbound["settings"] = settings
 
         outbounds = [outbound]
-        dialer_proxy = ''
+        dialer_proxy = ""
 
         if fragment:
             try:
-                length, interval, packets = fragment.split(',')
-                fragment_outbound = self.make_fragment_outbound(packets, length, interval)
+                length, interval, packets = fragment.split(",")
+                fragment_outbound = self.make_fragment_outbound(
+                    packets, length, interval
+                )
                 outbounds.append(fragment_outbound)
-                dialer_proxy = fragment_outbound['tag']
+                dialer_proxy = fragment_outbound["tag"]
             except ValueError:
                 pass
 
         outbound["streamSettings"] = self.make_stream_setting(
             net=net,
             tls=tls,
-            sni=inbound['sni'],
-            host=inbound['host'],
-            path=inbound['path'],
-            alpn=inbound.get('alpn', ''),
-            fp=inbound.get('fp', ''),
-            pbk=inbound.get('pbk', ''),
-            sid=inbound.get('sid', ''),
+            sni=inbound["sni"],
+            host=inbound["host"],
+            path=inbound["path"],
+            alpn=inbound.get("alpn", ""),
+            fp=inbound.get("fp", ""),
+            pbk=inbound.get("pbk", ""),
+            sid=inbound.get("sid", ""),
             headers=headers,
-            ais=inbound.get('ais', ''),
-            dialer_proxy=dialer_proxy
+            ais=inbound.get("ais", ""),
+            dialer_proxy=dialer_proxy,
         )
 
         mux_json = json.loads(self.mux_template)
         mux_config = mux_json["v2ray"]
 
-        if inbound.get('mux_enable', False):
-            outbound["mux"] = mux_config
-            outbound["mux"]["enabled"] = True
+        outbound["mux"] = mux_config
+        if outbound["mux"]["enabled"]:
+            outbound["mux"]["enabled"] = bool(inbound.get("mux_enable", False))
+
+        direct_outbound = {"protocol": "freedom", "settings": {}, "tag": "direct"}
+
+        outbounds.append(direct_outbound)
+
+        block_outbound = {
+            "protocol": "blackhole",
+            "settings": {"response": {"type": "http"}},
+            "tag": "block",
+        }
+
+        outbounds.append(block_outbound)
 
         self.add_config(remarks=remark, outbounds=outbounds)
