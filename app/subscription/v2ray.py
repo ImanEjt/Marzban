@@ -642,12 +642,12 @@ class V2rayJsonConfig(str):
 
         outbounds.append(direct_outbound)
 
-        block_outbound = {
-            "protocol": "blackhole",
-            "settings": {"response": {"type": "http"}},
-            "tag": "block",
-        }
+        # block_outbound = {
+        #     "protocol": "blackhole",
+        #     "settings": {"response": {"type": "http"}},
+        #     "tag": "block",
+        # }
 
-        outbounds.append(block_outbound)
+        # outbounds.append(block_outbound)
 
         self.add_config(remarks=remark, outbounds=outbounds)
