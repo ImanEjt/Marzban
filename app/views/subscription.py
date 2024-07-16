@@ -111,7 +111,7 @@ def user_subscription(token: str,
         if LooseVersion(version_str) >= LooseVersion("1.8.18") and \
                 (USE_CUSTOM_JSON_DEFAULT or USE_CUSTOM_JSON_FOR_V2RAYNG):
             conf = generate_subscription(user=user, config_format="v2ray-json", as_base64=False)
-             conf = json.loads(conf)
+            conf = json.loads(conf)
             conf.reverse()
             conf = json.dumps(conf, indent=4)
             return Response(content=conf, media_type="application/json", headers=response_headers)
