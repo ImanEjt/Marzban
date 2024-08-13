@@ -937,4 +937,11 @@ class V2rayJsonConfig(str):
             outbound["mux"] = mux_config
             outbound["mux"]["enabled"] = True
 
+        direct_outbound =  {
+              "protocol": "freedom",
+              "settings": {},
+              "tag": "direct"
+        }
+        outbounds.append(direct_outbound)
+
         self.add_config(remarks=remark, outbounds=outbounds)
