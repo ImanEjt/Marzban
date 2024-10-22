@@ -7,8 +7,12 @@ from jinja2.exceptions import TemplateNotFound
 
 from app.subscription.funcs import get_grpc_gun
 from app.templates import render_template
-from config import (CLASH_SETTINGS_TEMPLATE, CLASH_SUBSCRIPTION_TEMPLATE,
-                    MUX_TEMPLATE, USER_AGENT_TEMPLATE)
+from config import (
+    CLASH_SETTINGS_TEMPLATE,
+    CLASH_SUBSCRIPTION_TEMPLATE,
+    MUX_TEMPLATE,
+    USER_AGENT_TEMPLATE
+)
 
 
 class ClashConfiguration(object):
@@ -144,6 +148,7 @@ class ClashConfiguration(object):
 
     def make_node(self,
                   name: str,
+                  remark: str,
                   type: str,
                   server: str,
                   port: int,
@@ -164,15 +169,16 @@ class ClashConfiguration(object):
 
         if type == 'shadowsocks':
             type = 'ss'
-        if network == 'tcp' and headers == 'http':
+        if network in ('tcp', 'raw') and headers == 'http':
             network = 'http'
         if network == 'httpupgrade':
             network = 'ws'
             is_httpupgrade = True
         else:
             is_httpupgrade = False
+        if network in ("http","h2","h3"):
+            network = "h2"
 
-        remark = self._remark_validation(name)
         node = {
             'name': remark,
             'type': type,
@@ -228,7 +234,7 @@ class ClashConfiguration(object):
         elif network == 'h2':
             net_opts = self.h2_config(path=path, host=host)
 
-        elif network == 'tcp':
+        elif network in ('tcp', 'raw'):
             net_opts = self.tcp_config(path=path, host=host)
 
         else:
@@ -241,7 +247,6 @@ class ClashConfiguration(object):
 
         if mux_enable:
             net_opts['smux'] = mux_config
-            net_opts['smux']["enabled"] = True
 
         return node
 
@@ -250,8 +255,11 @@ class ClashConfiguration(object):
         if inbound['network'] in ("kcp", "splithttp"):
             return
 
+        proxy_remark = self._remark_validation(remark)
+
         node = self.make_node(
             name=remark,
+            remark=proxy_remark,
             type=inbound['protocol'],
             server=address,
             port=inbound['port'],
@@ -284,12 +292,13 @@ class ClashConfiguration(object):
             return
 
         self.data['proxies'].append(node)
-        self.proxy_remarks.append(remark)
+        self.proxy_remarks.append(proxy_remark)
 
 
 class ClashMetaConfiguration(ClashConfiguration):
     def make_node(self,
                   name: str,
+                  remark: str,
                   type: str,
                   server: str,
                   port: int,
@@ -309,6 +318,7 @@ class ClashMetaConfiguration(ClashConfiguration):
                   random_user_agent: bool = False):
         node = super().make_node(
             name=name,
+            remark=remark,
             type=type,
             server=server,
             port=port,
@@ -333,11 +343,14 @@ class ClashMetaConfiguration(ClashConfiguration):
 
     def add(self, remark: str, address: str, inbound: dict, settings: dict):
         # not supported by clash-meta
-        if inbound['network'] in ("kcp", "splithttp"):
+        if inbound['network'] in ("kcp", "splithttp") or (inbound['network'] == "quic" and inbound["header_type"] != "none"):
             return
+
+        proxy_remark = self._remark_validation(remark)
 
         node = self.make_node(
             name=remark,
+            remark=proxy_remark,
             type=inbound['protocol'],
             server=address,
             port=inbound['port'],
@@ -365,7 +378,7 @@ class ClashMetaConfiguration(ClashConfiguration):
         elif inbound['protocol'] == 'vless':
             node['uuid'] = settings['id']
 
-            if inbound['network'] in ('tcp', 'kcp') and inbound['header_type'] != 'http' and inbound['tls'] != 'none':
+            if inbound['network'] in ('tcp', 'raw', 'kcp') and inbound['header_type'] != 'http' and inbound['tls'] != 'none':
                 node['flow'] = settings.get('flow', '')
 
         elif inbound['protocol'] == 'trojan':
@@ -379,4 +392,4 @@ class ClashMetaConfiguration(ClashConfiguration):
             return
 
         self.data['proxies'].append(node)
-        self.proxy_remarks.append(remark)
+        self.proxy_remarks.append(proxy_remark)
