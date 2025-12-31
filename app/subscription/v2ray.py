@@ -441,11 +441,9 @@ class V2rayJsonConfig(str):
     def add_config(self, remarks, outbounds):
         json_template = json.loads(self.template)
         json_template["remarks"] = remarks
-        print("Havij:", remarks)
-        print(json_template)
+
         if '🇮🇷' in remarks:
             json_template["routing"]['rules'] = []
-        print(json_template)
 
         json_template["outbounds"] = outbounds + json_template["outbounds"]
         self.config.append(json_template)
